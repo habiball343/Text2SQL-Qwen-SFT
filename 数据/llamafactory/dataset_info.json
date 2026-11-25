@@ -1,0 +1,11 @@
+{
+ "sql_train": {
+  "file_name": "sql_train_alpaca.json",
+  "columns": {
+   "prompt": "instruction",
+   "query": "input",
+   "response": "output",
+   "system": "system"
+  }
+ }
+}
