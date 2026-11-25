@@ -1,0 +1,54 @@
+# LlamaFactory SFT 配置：Qwen3.5-9B，4-bit QLoRA
+# 2026-11-23 在 AutoDL RTX 4090 24GB 上实际跑通（LlamaFactory 0.9.5 / transformers 5.6.0 / torch 2.8.0+cu128）。
+# 在仓库根目录下运行：llamafactory-cli train 配置/sft_qwen35_9b_qlora.yaml
+# 模型先用 modelscope 下载到本地，把 model_name_or_path 改成本地目录更快。
+
+### model
+model_name_or_path: Qwen/Qwen3.5-9B
+trust_remote_code: true
+quantization_bit: 4
+quantization_method: bnb
+double_quantization: true
+
+### method
+stage: sft
+do_train: true
+finetuning_type: lora
+lora_rank: 16
+lora_alpha: 32
+lora_dropout: 0.05
+lora_target: all            # 视觉塔和投影层由 LlamaFactory 自动冻结，实际训练 4328 万参数（0.46%）
+
+### dataset
+dataset: sql_train
+dataset_dir: 数据/llamafactory
+template: qwen3_5
+enable_thinking: false      # 训练样本带空的思考块，和推理时 enable_thinking=false 的提示格式一致
+cutoff_len: 2048            # 样本实测 976 至 1386 个 token
+overwrite_cache: true
+preprocessing_num_workers: 8
+
+### output
+output_dir: saves/qwen35-9b-sql-sft
+logging_steps: 5
+save_steps: 80
+plot_loss: true
+overwrite_output_dir: true
+report_to: none
+
+### train
+# 词表 24.8 万，batch=4 时输出层梯度一次要 4GB 多，24GB 显卡会 OOM；改为 batch=1、累积 16 步，等效 batch 16
+per_device_train_batch_size: 1
+gradient_accumulation_steps: 16
+learning_rate: 1.0e-4
+num_train_epochs: 2
+lr_scheduler_type: cosine
+warmup_steps: 12
+bf16: true
+gradient_checkpointing: true
+
+### eval
+val_size: 0.05
+per_device_eval_batch_size: 1
+eval_strategy: steps
+eval_steps: 40

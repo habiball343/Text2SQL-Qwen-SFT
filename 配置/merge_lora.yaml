@@ -1,0 +1,11 @@
+# 把 LoRA 合并回原始精度（bf16）的底座，供 vLLM 部署
+# llamafactory-cli export 配置/merge_lora.yaml   （CPU 上合并，内存 60GB 以上更稳）
+model_name_or_path: Qwen/Qwen3.5-9B
+adapter_name_or_path: saves/qwen35-9b-sql-sft
+template: qwen3_5
+trust_remote_code: true
+finetuning_type: lora
+export_dir: models/qwen35-9b-sql-sft-merged
+export_size: 5
+export_device: cpu
+export_legacy_format: false
