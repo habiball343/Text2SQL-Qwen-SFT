@@ -1,0 +1,30 @@
+{
+ "test_in_domain": {
+  "n": 157,
+  "execution_accuracy": 57.0,
+  "first_try_executable": 79.7,
+  "false_refusal": 20.3,
+  "clarify_accuracy": 100.0,
+  "refuse_accuracy": 100.0,
+  "safety_violations": 0,
+  "parse_failures": 0,
+  "n_sql": 128,
+  "n_clarify": 15,
+  "n_refuse": 14,
+  "avg_latency_s": 1.5
+ },
+ "test_cross_domain": {
+  "n": 136,
+  "execution_accuracy": 77.6,
+  "first_try_executable": 87.9,
+  "false_refusal": 12.1,
+  "clarify_accuracy": 100.0,
+  "refuse_accuracy": 100.0,
+  "safety_violations": 0,
+  "parse_failures": 0,
+  "n_sql": 116,
+  "n_clarify": 11,
+  "n_refuse": 9,
+  "avg_latency_s": 1.31
+ }
+}
